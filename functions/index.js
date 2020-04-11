@@ -3,7 +3,7 @@ const app = require('express')();
 const FBAuth = require('./util/FBAuth');
 
 const { getAllPosts, postOnePost } = require('./handlers/posts');
-const { signUp, login } = require('./handlers/users');
+const { signUp, login, uploadImage } = require('./handlers/users');
 
 // const firebase = require('firebase/app');
 // require('./node_modules/firebase/firebase-app.js');
@@ -18,6 +18,7 @@ app.post('/post', FBAuth, postOnePost);
 // User Routes
 app.post('/signup', signUp);
 app.post('/login', login);
+app.post('/user/image', FBAuth, uploadImage);
 
 // Taking in routes from express and sending through 'api' function
 exports.api = functions.https.onRequest(app);
