@@ -20,7 +20,7 @@ exports.getAllPosts = (req, res) => {
       return res.json(posts);
     })
     .catch((err) => {
-      res.status(500).json({ error: 'Something Went Wrong!' });
+      res.status(500).json({ error: err.code });
       console.error(err);
     });
 };
