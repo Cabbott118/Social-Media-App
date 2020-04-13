@@ -115,7 +115,7 @@ exports.onUserImageChange = functions.firestore
           });
           return batch.commit();
         });
-    }
+    } else return true;
   });
 exports.onPostDelete = functions.firestore
   .document('/posts/{postId}')
