@@ -22,6 +22,7 @@ exports.getAllPosts = (req, res) => {
     });
 };
 
+// add one post
 exports.postOnePost = (req, res) => {
   if (req.body.body.trim() === '') {
     return res.status(400).json({ body: 'Please add content to your post' });
@@ -30,13 +31,18 @@ exports.postOnePost = (req, res) => {
   const newPost = {
     body: req.body.body,
     userHandle: req.user.handle,
+    userImage: req.user.imageUrl,
     createdAt: new Date().toISOString(),
+    likeCount: 0,
+    commentCount: 0,
   };
 
   db.collection('posts')
     .add(newPost)
     .then((doc) => {
-      res.json({ message: `Document ${doc.id} Created Successfully` });
+      const resPost = newPost;
+      resPost.postId = doc.id;
+      res.json(resPost);
     })
     .catch((err) => {
       res.status(500).json({ error: 'Something Went Wrong!' });
@@ -44,6 +50,7 @@ exports.postOnePost = (req, res) => {
     });
 };
 
+// Get one post
 exports.getPost = (req, res) => {
   let postData = {};
   db.doc(`/posts/${req.params.postId}`)
@@ -73,6 +80,9 @@ exports.getPost = (req, res) => {
     });
 };
 
+// Like a post
+
+// Comment on a post
 exports.commentOnPost = (req, res) => {
   if (req.body.body.trim() === '')
     return res.status(400).json({ comment: 'Cannot submit an empty comment' });
@@ -82,7 +92,7 @@ exports.commentOnPost = (req, res) => {
     createdAt: new Date().toISOString(),
     postId: req.params.postId,
     userHandle: req.user.handle,
-    // userImage: req.user.imageUrl,
+    userImage: req.user.imageUrl,
   };
   console.log(newComment);
 
