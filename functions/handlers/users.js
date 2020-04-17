@@ -168,12 +168,12 @@ exports.getAuthenticatedUser = (req, res) => {
       userData.notifications = [];
       data.forEach((doc) => {
         userData.notifications.push({
-          recipient: doc.data.recipient,
-          sender: doc.data.sender,
-          createdAt: doc.data.createdAt,
-          postId: doc.data.postId,
-          type: doc.data.type,
-          read: doc.data.read,
+          recipient: doc.data().recipient,
+          sender: doc.data().sender,
+          createdAt: doc.data().createdAt,
+          postId: doc.data().postId,
+          type: doc.data().type,
+          read: doc.data().read,
           notificationId: doc.id,
         });
       });
