@@ -187,7 +187,7 @@ exports.commentOnPost = (req, res) => {
   };
   console.log(newComment);
 
-  db.doc(`posts/${req.params.postId}`)
+  db.doc(`/posts/${req.params.postId}`)
     .get()
     .then((doc) => {
       if (!doc.exists) {
