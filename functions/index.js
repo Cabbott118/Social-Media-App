@@ -47,7 +47,7 @@ app.get('/user/:handle', getUserDetails);
 app.post('/notifications', FBAuth, markNotificationsRead);
 
 // Message routes
-
+app.get('/message', FBAuth, getAllMessages);
 app.post('/user/:handle/message', FBAuth, sendMessage);
 
 // Taking in routes from express and sending through 'api' function
