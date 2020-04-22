@@ -100,6 +100,26 @@ exports.login = (req, res) => {
     });
 };
 
+// Search registered usernames
+exports.searchUsers = (req, res) => {
+  db.collection('users')
+    .orderBy('createdAt', 'desc')
+    .get()
+    .then((data) => {
+      let usernames = [];
+      data.forEach((doc) => {
+        usernames.push({
+          handle: doc.data().handle,
+        });
+      });
+      return res.json(usernames);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: err.code });
+    });
+};
+
 // Get any user's details
 exports.getUserDetails = (req, res) => {
   let userData = {};

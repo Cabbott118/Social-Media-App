@@ -18,6 +18,7 @@ const {
 const {
   signUp,
   login,
+  searchUsers,
   getAuthenticatedUser,
   uploadImage,
   addUserDetails,
@@ -37,6 +38,7 @@ app.delete('/post/:postId', FBAuth, deletePost);
 // User Routes
 app.post('/signup', signUp);
 app.post('/login', login);
+app.get('/username', searchUsers);
 app.get('/user', FBAuth, getAuthenticatedUser);
 app.post('/user/image', FBAuth, uploadImage);
 app.post('/user', FBAuth, addUserDetails);
