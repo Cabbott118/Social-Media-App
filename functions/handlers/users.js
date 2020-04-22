@@ -54,6 +54,7 @@ exports.signUp = (req, res) => {
         createdAt: new Date().toISOString(),
         imageUrl: `https://firebasestorage.googleapis.com/v0/b/${firebaseConfig.storageBucket}/o/${noImg}?alt=media`,
         userId,
+        messageCount: 0,
       };
       return db.doc(`/users/${newUser.handle}`).set(userCredentials);
     })

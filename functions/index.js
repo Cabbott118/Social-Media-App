@@ -25,6 +25,7 @@ const {
   getUserDetails,
   markNotificationsRead,
 } = require('./handlers/users');
+const { sendMessage } = require('./handlers/messages');
 
 // Posts Routes
 app.get('/posts', getAllPosts);
@@ -44,6 +45,9 @@ app.post('/user/image', FBAuth, uploadImage);
 app.post('/user', FBAuth, addUserDetails);
 app.get('/user/:handle', getUserDetails);
 app.post('/notifications', FBAuth, markNotificationsRead);
+
+// Message routes
+app.post('/user/:handle/message', FBAuth, sendMessage);
 
 // Taking in routes from express and sending through 'api' function
 exports.api = functions.https.onRequest(app);
@@ -73,6 +77,7 @@ exports.createNotificationOnLike = functions.firestore
         console.error(err);
       });
   });
+
 exports.deleteNotificationOnUnlike = functions.firestore
   .document('likes/{id}')
   .onDelete((snapshot) => {
@@ -84,6 +89,7 @@ exports.deleteNotificationOnUnlike = functions.firestore
         return;
       });
   });
+
 exports.createNotificationOnComment = functions.firestore
   .document('comments/{id}')
   .onCreate((snapshot) => {
