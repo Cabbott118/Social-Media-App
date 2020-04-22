@@ -1,34 +1,49 @@
 const { db } = require('../util/admin');
 
+exports.getAllMessages = (req, res) => {
+  db.collection('messages')
+    .orderBy('createdAt', 'desc')
+    .get()
+    .then((data) => {
+      let messages = [];
+      data.forEach((doc) => {
+        messages.push({
+          messageId: doc.id,
+          body: doc.data().body,
+          userHandle: doc.data().userHandle,
+          createdAt: doc.data().createdAt,
+        });
+      });
+      return res.json(messages);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.code });
+      console.error(err);
+    });
+};
+
+// Send Message
 exports.sendMessage = (req, res) => {
-  if (req.body.body.trim() === '')
-    return res.status(400).json({ message: 'Cannot send empty message' });
+  if (req.body.body.trim() === '') {
+    return res.status(400).json({ body: 'Please add content to your post' });
+  }
 
   const newMessage = {
     body: req.body.body,
-    createdAt: new Date().toISOString(),
-    userId: req.params.userId,
     userHandle: req.user.handle,
-    userImage: req.user.imageUrl,
+    recipient: req.params.handle,
+    createdAt: new Date().toISOString(),
   };
-  console.log(newMessage);
 
-  db.doc(`/messages/${req.params.userId}`)
-    .get()
+  db.collection('messages')
+    .add(newMessage)
     .then((doc) => {
-      if (!doc.exists) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-      return doc.ref.update({ messageCount: doc.data().messageCount + 1 });
-    })
-    .then(() => {
-      return db.collection('messages').add(newMessage);
-    })
-    .then(() => {
-      res.json(newMessage);
+      const resMessage = newMessage;
+      resMessage.messageId = doc.id;
+      res.json(resMessage);
     })
     .catch((err) => {
+      res.status(500).json({ error: 'Something Went Wrong!' });
       console.error(err);
-      res.status(500).json({ error: 'Something went wrong' });
     });
 };

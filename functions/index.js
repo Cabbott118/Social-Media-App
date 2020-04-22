@@ -25,7 +25,7 @@ const {
   getUserDetails,
   markNotificationsRead,
 } = require('./handlers/users');
-const { sendMessage } = require('./handlers/messages');
+const { getAllMessages, sendMessage } = require('./handlers/messages');
 
 // Posts Routes
 app.get('/posts', getAllPosts);
@@ -47,6 +47,7 @@ app.get('/user/:handle', getUserDetails);
 app.post('/notifications', FBAuth, markNotificationsRead);
 
 // Message routes
+
 app.post('/user/:handle/message', FBAuth, sendMessage);
 
 // Taking in routes from express and sending through 'api' function
