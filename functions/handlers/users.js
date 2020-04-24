@@ -111,6 +111,7 @@ exports.searchUsers = (req, res) => {
       data.forEach((doc) => {
         usernames.push({
           handle: doc.data().handle,
+          userImage: doc.data().userImage,
         });
       });
       return res.json(usernames);
